@@ -16,6 +16,9 @@ import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketServerCompressionHandler;
 import io.netty.handler.codec.protobuf.ProtobufDecoder;
+import io.netty.handler.codec.protobuf.ProtobufEncoder;
+import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
+import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import io.netty.handler.timeout.IdleStateHandler;
 
@@ -33,7 +36,7 @@ public class WSServerInitializer extends ChannelInitializer<SocketChannel> {
                 .addLast(new HttpObjectAggregator(65536))
                 .addLast(new ChunkedWriteHandler())
                 .addLast(new WebSocketServerCompressionHandler())
-                .addLast(new WebSocketServerProtocolHandler("/", null, Boolean.TRUE))
+                .addLast(new WebSocketServerProtocolHandler("/ws", null, Boolean.TRUE))
                 .addLast(new MessageToMessageDecoder<WebSocketFrame>() {
                     @Override
                     protected void decode(ChannelHandlerContext ctx, WebSocketFrame frame, List<Object> objs) throws Exception {
